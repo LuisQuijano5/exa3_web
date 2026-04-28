@@ -5,9 +5,13 @@ import {
   ApiResponse, 
   KardexData, 
   HorarioPeriodo, 
-  CalificacionesPeriodo } from '../types/api';
+  CalificacionesPeriodo,
+  PaginatedTeachers,
+  PaginatedEvaluations } from '../types/api';
+import { Teacher, Evaluation } from '../types/api';
 
 const BASE_URL = '/tecnm-api';
+const TEACHERS_BASE_URL = 'https://funcionalidad-exa3.onrender.com';
 
 // Para verificar si el navegador tiene el token
 const getToken = () => {
@@ -77,4 +81,44 @@ export const getHorarios = async (): Promise<HorarioPeriodo[]> => {
 export const getCalificaciones = async (): Promise<CalificacionesPeriodo[]> => {
   const json: ApiResponse<CalificacionesPeriodo[]> = await fetchWithAuth('/api/movil/estudiante/calificaciones');
   return json.data;
+};
+
+
+// ==== FUNCIONALIDAD EXTRA ====
+const fetchTeachersAPI = async (endpoint: string) => {
+  let token = getToken();
+  
+  const response = await fetch(`${TEACHERS_BASE_URL}${endpoint}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error en la petición a profesores: ${response.statusText}`);
+  }
+  
+  return response.json();
+};
+
+export const getTeachersList = async (page = 1, limit = 10, search = '', department = ''): Promise<PaginatedTeachers> => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: limit.toString(),
+  });
+  
+  if (search) params.append('search', search);
+  if (department) params.append('department', department);
+
+  return fetchTeachersAPI(`/teachers?${params.toString()}`);
+};
+
+export const getTeacherStats = async (id: string): Promise<Teacher> => {
+  return fetchTeachersAPI(`/teachers/${id}`);
+};
+
+export const getTeacherEvals = async (id: string, page = 1, limit = 10): Promise<PaginatedEvaluations> => {
+  return fetchTeachersAPI(`/teachers/${id}/evaluations?page=${page}&limit=${limit}`);
 };

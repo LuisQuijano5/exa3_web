@@ -31,8 +31,10 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Inicio', path: '/dashboard' },
-    { name: 'Materias', path: '/materias' },
+    { name: 'Calificaciones', path: '/calificaciones' },
     { name: 'Horario', path: '/horario' },
+    { name: 'Profesores', path: '/profesores' },
+    { name: 'Kardex', path: '/kardex' },
   ];
 
   return (

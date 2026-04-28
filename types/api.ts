@@ -110,3 +110,47 @@ export interface CalificacionesPeriodo {
   periodo: PeriodoInfo;
   materias: MateriaCalificacion[];
 }
+
+
+// === FUNCIONALIDAD EXTRA ===
+// types/teacher.ts
+
+// types/teacher.ts
+
+export interface Evaluation {
+  id: string;
+  teacher_id: string;
+  grade: number;
+  comment: string | null;
+  subject: string | null;
+  student_grade: number | null;
+  modality: 'regular' | 'repeticion' | 'especial' | null;
+}
+
+export interface Teacher {
+  id: string;
+  name: string;
+  email: string;
+  department: string;
+  photo_url: string | null;
+  average_grade: number;
+  evaluation_count: number;
+  avg_student_grade: number;
+  regular_count: number;
+  repeticion_count: number;
+  especial_count: number;
+}
+
+export interface PaginatedTeachers {
+  data: Teacher[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export interface PaginatedEvaluations {
+  data: Evaluation[];
+  total: number;
+  page: number;
+  limit: number;
+}
