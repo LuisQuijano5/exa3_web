@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async rewrites() {
+    return [
+      {
+        source: '/tecnm-api/:path*',
+        destination: 'https://sii.celaya.tecnm.mx/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
